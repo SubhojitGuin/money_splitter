@@ -1,0 +1,10 @@
+{% extends "expenses/base_generic.html" %}
+
+{% block content %}
+  <h1>Expenses</h1>
+  <ul>
+    {% for expense in expenses %}
+      <li>{{ expense.name }} - {{ expense.amount }} - {{ expense.split_method }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "groups/base_generic.html" %}
+{% block content %}
+
+<h1>Join Group</h1>
+<p>Join the group with ID:</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="number" name="group_id" required>
+    <button type="submit">Join</button>
+</form>
+
+{% endblock %}

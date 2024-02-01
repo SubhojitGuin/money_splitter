@@ -1,0 +1,20 @@
+{% extends "notifications/base_generic.html" %}
+
+{% block content %}
+  <h1>Notifications</h1>
+  <ul>
+    {% for notification in notifications %}
+      <li>
+        {% if notification.expense %}
+          {{ notification.expense }} has been added to {{ notification.group }}
+        {% endif %}
+        {% if notification.read %}
+          (read)
+        {% else %}
+          (unread)
+        {% endif %}
+        <a href="{% url 'notifications:mark_notification_read' notification_id=notification.id %}">Mark as read</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
