@@ -4,6 +4,9 @@
 <h1>Join Group</h1>
 <p>Join the group with ID:</p>
 <form method="post">
+    <ul>
+       <li>Group Id : {{groups.id}}</li>
+    </ul>
     {% csrf_token %}
     <input type="number" name="group_id" required>
     <button type="submit">Join</button>

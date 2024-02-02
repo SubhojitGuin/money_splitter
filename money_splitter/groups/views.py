@@ -26,8 +26,10 @@ def create_group(request):
     return render(request, 'groups/create_group.html', {'form': form})
 
 
+
 @login_required
 def join_group(request, pk):
     group = Group.objects.get(id=pk)
     group.members.add(request.user)
-    return redirect('groups:group_list')
+    return render(request, 'groups/join_group.html', {'groups': group})
+    # return redirect('groups:group_list')

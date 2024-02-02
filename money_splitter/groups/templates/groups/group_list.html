@@ -4,7 +4,10 @@
   <h1>Groups</h1>
   <ul>
     {% for group in groups %}
-      <li>{{ group.name }}</li>
+      <li>
+        {{ group.name }}
+        <a href="join/{{ group.id }}">Join Group </a>
+      </li>
     {% endfor %}
   </ul>
   <a href="{% url 'groups:create_group' %}">Create Group</a>

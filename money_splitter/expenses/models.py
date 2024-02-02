@@ -12,5 +12,6 @@ class Expense(models.Model):
     split_method = models.CharField(max_length=10, choices=(('equal', 'Equal'), ('custom', 'Custom')), default='default_value')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
+
     def __str__(self):
         return self.name

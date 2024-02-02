@@ -4,7 +4,9 @@
 
 <h1>Create Expense</h1>
 <form method="post">
-    {% csrf\_token %}
-    {{ form.as\_p }}
+    {% csrf_token %}
+    <label for="group_id">Group ID:</label>
+    <input type="text" id="group_id" name="group_id" required>
+    {{ form.as_p }}
     <button type="submit">Create</button>
 </form> {% endblock %}
