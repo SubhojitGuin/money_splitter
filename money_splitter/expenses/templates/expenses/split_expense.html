@@ -1,14 +1,11 @@
 {% extends "expenses/base_generic.html" %}
 
 {% block content %}
-  <h1>Split Expense</h1>
-  <form method="post">
+
+<h1>Split Expense</h1>
+<p>Are you sure you want to split this expense equally among all members of the group?</p>
+<form method="post">
     {% csrf_token %}
-    {% for expense in expenses %}
-      <p>{{ expense.name }} - {{ expense.amount }}</p>
-      <label for="split_{{ expense.id }}">Split:</label>
-      <input type="number" name="split_{{ expense.id }}" id="split_{{ expense.id }}" value="1" required>
-    {% endfor %}
-    <button type="submit">Split</button>
-  </form>
+    <button type="submit">Yes, split equally</button>
+</form>
 {% endblock %}
