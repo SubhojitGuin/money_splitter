@@ -6,27 +6,29 @@ from .forms import ExpenseForm
 
 
 @login_required
-def expense_list(request):
-    expenses = Expense.objects.filter(group__members=request.user)
-    return render(request, 'expenses/expense_list.html', {'expenses': expenses})
+def expense_list(request, pk):
+    expenses = Expense.objects.filter(group=pk)
+    return render(request, 'expenses/expense_list.html', {'expenses': expenses , 'id':pk})
 
 
 @login_required
-
-def create_expense(request):
+def create_expense(request, pk):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             expense = form.save(commit=False)
             expense.creator = request.user
-            group = request.user.groups.first()  # Get the user's group
-            if group:
-                expense.group = group.id  # Set the expense's group_id field to the group's id
+            # group = request.user.groups.first()  # Get the user's group
+            # if group is not None:
+            expense.group_id = pk  # Set the expense's group_id field to
+            # the group's id
             expense.save()
-            return redirect('expenses:expense_list')
+            # expenses = Expense.objects.filter(group=pk)
+            # return render(request, 'expenses/expense_list.html', {'expenses': expenses})
     else:
         form = ExpenseForm()
-    return render(request, 'expenses/create_expense.html', {'form': form})
+    return render(request, 'expenses/create_expense.html', {'form': form, 'id': pk})
+
 
 @login_required
 def split_expense(request):

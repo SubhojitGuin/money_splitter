@@ -5,10 +5,12 @@
   <ul>
     {% for group in groups %}
       <li>
-        {{ group.name }}
+        <a href="{% url 'expenses:expense_list' group.id %}">{{ group.name }}</a>
         <a href="join/{{ group.id }}">Join Group </a>
+
       </li>
     {% endfor %}
   </ul>
   <a href="{% url 'groups:create_group' %}">Create Group</a>
+
 {% endblock %}

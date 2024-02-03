@@ -9,7 +9,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('expenses:expense_list')
+            return redirect('groups:group_list')
     else:
         form = UserCreationForm()
     return render(request, 'users/register.html', {'form': form})
@@ -22,7 +22,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('expenses:expense_list')
+            return redirect('groups:group_list')
         else:
             return render(request, 'users/login.html',
                           {'error': 'Invalid credentials'})
