@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/jpg" href="./img/money.jpg" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'expensestyle.css' %}">
+    <title>splitto4kiddo</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <img
+          src="./img/money.jpg"
+          alt="splitto4kiddo logo"
+          class="nav__logo"
+          id="logo"
+          designer="splitto4kiddo"
+          data-version-number="3.0"
+        />
+        <ul class="nav__links">
+          <li class="nav__item">
+            <a class="nav__link nav__link--btn btn--show-modal profile"
+              href="#section--1"> Profile </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header__title" id="section--0">
+        <h1>
+          <!-- Green highlight effect -->
+          <span class="highlight">Precision in Every Penny:</span>
+          Mastering<br />
+          <span class="highlight">Division with Elegance"</span>
+        </h1>
+        <h4>
+          Splitto-4-Kiddo is the easiest way to split expenses with a group of
+          friends -no accounts or app installs required.
+        </h4>
+        <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
+        <img src="./img/split.png" class="header__img" alt="hero1" />
+      </div>
+    </header>
+
+    <section class="section-main" id="section--1">
+      <div class="new-button-group">
+        <a href="../../../expenses/templates/expenses/createnewgroup.html" style="text-decoration: none">
+          <button class="new-button">
+            <span class="new-button-icon"><i class="fa fa-heart"></i></span>
+            <span class="new-button-text">Create New Group</span>
+          </button>
+        </a>
+
+        <a href="../../../expenses/templates/expenses/expense.html" style="text-decoration: none"
+          ><button class="new-button">
+            <span class="new-button-icon"
+              ><i class="fa fa-info-circle"></i
+            ></span>
+            <span class="new-button-text">Open Previous Records</span>
+          </button></a
+        >
+      </div>
+    </section>
+    <div class="myimg">
+      <img src="./img/icon.jpg" alt="our page"
+      width="420px">
+  </div>
+    <section class="section section--sign-up">
+      <div class="section__title">
+        <h3 class="section__header">
+          "Divide Wisely, Live Lavishly: Crafting Elegance in Expense
+          Management."
+        </h3>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <ul class="footer__nav">
+        <li class="footer__item"><a class="footer__link" href="../../../expenses/templates/expenses/about.html">About Us</a></li>
+        <li class="footer__item">
+          <a class="footer__link" href="../../../expenses/templates/expenses/terms.html">Terms of Use</a>
+        </li>
+        <li class="footer__item">
+          <a class="footer__link" href="../../../expenses/templates/expenses/privacy.html">Privacy Policy</a>
+        </li>
+        <li class="footer__item">
+          <a class="footer__link" href="../../../expenses/templates/expenses/blog.html">Blog</a>
+        </li>
+      </ul>
+      <img src="img/tabicon.png" alt="Logo" class="footer__logo" />
+      <p class="footer__copyright">
+        &copy; Made with ❤️ by
+        <a
+          class="footer__link twitter-link"
+          target="_blank"
+          href="https://github.com/FullPlates"
+          >Team HackBusters</a
+        >
+        for Diversion 2K24.
+      </p>
+      <p class="btn--text btn--scroll-up">Back To the top &uparrow;</p>
+    </footer>
+
+    <div class="modal hidden">
+      <button class="btn--close-modal-t">&times;</button>
+      <h2 class="modal__header-t">
+        <span class="highlight"> Enter your details</span>
+      </h2>
+      <form class="modal__table">
+        <label>First Name</label>
+        <input type="text" id="myName" />
+        <label>Last Name</label>
+        <input type="text" />
+        <label>Email Address</label>
+        <input type="email" />
+        <button class="btn-log-click">Next step &rarr;</button>
+      </form>
+    </div>
+
+    <div class="overlay hidden"></div>
+
+    <script src="myscript.js"></script>
+  </body>
+</html>
