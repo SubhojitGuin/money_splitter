@@ -13,6 +13,7 @@ class Payment(models.Model):
     paid_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='payments_received', null=True)
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name='payments')
     created_at = models.DateTimeField(auto_now_add=True)
-
+    paid_by_names = models.CharField(max_length=100, null=True)
+    paid_to_names = models.CharField(max_length=100, null=True)
     def __str__(self):
         return f'{self.amount} paid by {self.paid_by} to {self.paid_to} for {self.expense}'

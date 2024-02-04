@@ -9,7 +9,8 @@ from django.contrib.auth import get_user_model
 @login_required
 def expense_list(request, pk):
     expenses = Expense.objects.filter(group=pk)
-    return render(request, 'expenses/expense_list.html', {'expenses': expenses , 'id':pk})
+    return render(request, 'expenses/expense_list.html',
+                  {'expenses': expenses, 'id': pk})
 
 
 @login_required
@@ -22,12 +23,14 @@ def create_expense(request, pk):
             expense.creator = request.user
             expense.group_id = pk
             expense.save()
-            split_expense(request, expense_id=expense.id)
-            #split_expense(request , expense.id)
+            split_exp(request, expense_id=expense.id)
+            # split_expense(request , expense.id)
             # return redirect('expenses:expense_list', pk=pk)
     else:
         form = ExpenseForm()
-    return render(request, 'expenses/create_expense.html', {'form': form, 'id': pk, 'expense':expense})
+    return render(request, 'expenses/create_expense.html',
+                  {'form': form, 'id': pk, 'expense': expense})
+
 
 # def split_expense(request , expense_id):
 #     expense = Expense.objects.get(id=expense_id)
@@ -47,21 +50,26 @@ def create_expense(request, pk):
 #         payment.save()
 #     expense.delete()
 #
-
-def split_expense(request, expense_id):
+def split_exp(request, expense_id):
     expense = Expense.objects.get(id=expense_id)
 
     members = expense.group.members.all()
     split_amount = expense.amount / members.count()
     for member in members:
-        #if member == expense.creator:
-            #continue
+        # if member == expense.creator:
+        # continue
         payment = Payment()
         payment.expense = expense
         payment.amount = split_amount
-        #payment.paid_to = member
-        #payment.paid_by = expense.creator
+        # payment.paid_to = member
+        # payment.paid_by = expense.creator
+        payment.paid_by_names = member.username
+        payment.paid_to_names = expense.creator.username
 
         payment.save()
-    expenses = Payment.objects.filter(expense_id=expense_id)
-    return render(request, 'expenses/split_expense.html', {'expenses': expenses})
+
+
+def split_expense(request, expense_id, group_id):
+    payments = Payment.objects.filter(expense_id=expense_id)
+    return render(request, 'expenses/split_expense.html',
+                  {'payments': payments, 'id': group_id})

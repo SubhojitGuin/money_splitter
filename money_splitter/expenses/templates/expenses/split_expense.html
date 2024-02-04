@@ -2,13 +2,13 @@
 
 {% block content %}
   <h1>Split Expense</h1>
-  <form method="post">
     {% csrf_token %}
-    {% for expense in expenses %}
-      <p>  {{ expense.amount }}</p>
-      <p for="split_{{ expense.id }}">Split:</p>
+     <h3>Payment Done by :  {{expense.paid_to_names}}[0] </h3>
+    {% for expense in payments %}
+
+      <p>{{expense.paid_by_names}}  {{ expense.amount }}</p>
+      <!--<p>Split:</p>-->
       <!--<input type="number" name="split_{{ expense.id }}" id="split_{{ expense.id }}" value="1" required>-->
     {% endfor %}
-    <button type="submit">Split</button>
-  </form>
+      <a href="{% url 'expenses:expense_list' id %}">Back To Expense List</a>
 {% endblock %}

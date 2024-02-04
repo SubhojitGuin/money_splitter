@@ -4,8 +4,9 @@
   <h1>Expenses</h1>
   <ul>
     {% for expense in expenses %}
-      <li>{{ expense.name }} - {{ expense.amount }} - {{ expense.split_method }}</li>
+    <li><a href="{% url 'expenses:split_expense' expense_id=expense.id group_id=id%}">{{ expense.name }}</a> - {{ expense.amount }}</li>
     {% endfor %}
   </ul>
 <a href="{% url 'expenses:create_expense' id %}">Create Expense</a>
+<a href="{% url 'groups:group_list' %}">Back to Group List</a>
 {% endblock %}

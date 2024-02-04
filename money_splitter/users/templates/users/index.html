@@ -5,20 +5,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="shortcut icon" type="image/jpg" href="./img/money.jpg" />
-
+    <link rel="shortcut icon" type="image/jpg" href="{% static 'money.jpg'}" />
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'expensestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'expensestyle.css' %}" />
     <title>splitto4kiddo</title>
   </head>
   <body>
     <header class="header">
       <nav class="nav">
         <img
-          src="./img/money.jpg"
+          src="{% static 'money.jpg'}"
           alt="splitto4kiddo logo"
           class="nav__logo"
           id="logo"
@@ -44,20 +43,20 @@
           friends -no accounts or app installs required.
         </h4>
         <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
-        <img src="./img/split.png" class="header__img" alt="hero1" />
+        <img src="./img/split.png" "{% static 'split.jpg'}" class="header__img" alt="hero1" />
       </div>
     </header>
 
     <section class="section-main" id="section--1">
       <div class="new-button-group">
-        <a href="../../../expenses/templates/expenses/createnewgroup.html" style="text-decoration: none">
+        <a href="createnewgroup.html" style="text-decoration: none">
           <button class="new-button">
             <span class="new-button-icon"><i class="fa fa-heart"></i></span>
             <span class="new-button-text">Create New Group</span>
           </button>
         </a>
 
-        <a href="../../../expenses/templates/expenses/expense.html" style="text-decoration: none"
+        <a href="expense.html" style="text-decoration: none"
           ><button class="new-button">
             <span class="new-button-icon"
               ><i class="fa fa-info-circle"></i
@@ -82,15 +81,15 @@
 
     <footer class="footer">
       <ul class="footer__nav">
-        <li class="footer__item"><a class="footer__link" href="../../../expenses/templates/expenses/about.html">About Us</a></li>
+        <li class="footer__item"><a class="footer__link" href="about.html">About Us</a></li>
         <li class="footer__item">
-          <a class="footer__link" href="../../../expenses/templates/expenses/terms.html">Terms of Use</a>
+          <a class="footer__link" href="terms.html">Terms of Use</a>
         </li>
         <li class="footer__item">
-          <a class="footer__link" href="../../../expenses/templates/expenses/privacy.html">Privacy Policy</a>
+          <a class="footer__link" href="privacy.html">Privacy Policy</a>
         </li>
         <li class="footer__item">
-          <a class="footer__link" href="../../../expenses/templates/expenses/blog.html">Blog</a>
+          <a class="footer__link" href="blog.html">Blog</a>
         </li>
       </ul>
       <img src="img/tabicon.png" alt="Logo" class="footer__logo" />
