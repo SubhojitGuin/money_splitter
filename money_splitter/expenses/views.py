@@ -3,14 +3,16 @@ from django.contrib.auth.decorators import login_required
 from .models import Expense
 from payments.models import Payment
 from .forms import ExpenseForm
+from groups.models import Group
 from django.contrib.auth import get_user_model
 
 
 @login_required
 def expense_list(request, pk):
     expenses = Expense.objects.filter(group=pk)
+    group_name = Group.objects.get(id=pk).name
     return render(request, 'expenses/expense_list.html',
-                  {'expenses': expenses, 'id': pk})
+                  {'expenses': expenses, 'id': pk , 'group_name': group_name})
 
 
 @login_required

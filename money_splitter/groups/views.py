@@ -1,8 +1,8 @@
 # Create your views here.
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Group
-from .forms import GroupForm
+from .forms import GroupForm, GroupIdForm
 
 
 @login_required
@@ -28,8 +28,14 @@ def create_group(request):
 
 
 @login_required
-def join_group(request, pk):
-    group = Group.objects.get(id=pk)
-    group.members.add(request.user)
-    return render(request, 'groups/join_group.html', {'groups': group})
-    # return redirect('groups:group_list')
+def join_group(request):
+    if request.method == 'POST':
+        form = GroupIdForm(request.POST)
+        if form.is_valid():
+            group_id = form.cleaned_data['group_id']
+            group = get_object_or_404(Group, id=group_id)
+            group.members.add(request.user)
+            return redirect('groups:group_list')
+    else:
+        form = GroupIdForm()
+    return render(request, 'groups/join_group.html', {'form': form})

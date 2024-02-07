@@ -2,16 +2,17 @@
 
 {% block content %}
   <h1>Groups</h1>
+  <a href="{% url 'groups:create_group' %}">Create Group</a>
+  <a href="join/">Join Group </a>
   <ul>
     {% for group in groups %}
       <li>
         <a href="{% url 'expenses:expense_list' group.id %}">{{ group.name }}  </a>
-         <span style="margin-right: 20px;"></span>
-        <a href="join/{{ group.id }}">Join Group </a>
-        <br>
+<!--         <span style="margin-right: 20px;"></span>-->
+
       </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'groups:create_group' %}">Create Group</a>
+
 
 {% endblock %}

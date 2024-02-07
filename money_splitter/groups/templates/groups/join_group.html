@@ -1,16 +1,11 @@
 {% extends "groups/base_generic.html" %}
 {% block content %}
 
-<h1>Join Group</h1>
-<p>Join the group with ID:</p>
+<h2>Join a Group</h2>
 <form method="post">
-    <ul>
-       <li>Group Id : {{groups.id}}</li>
-    </ul>
     {% csrf_token %}
-    <input type="number" name="group_id" required>
-    <button type="submit">Join</button>
+    {{ form.as_p }}
+    <button type="submit">Join Group</button>
 </form>
-<a href="{% url 'groups:group_list' %}">Back</a>
 
 {% endblock %}
