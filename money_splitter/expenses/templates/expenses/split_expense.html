@@ -1,14 +1,28 @@
+
 {% extends "expenses/base_generic.html" %}
 
 {% block content %}
-  <h1>Split Expense</h1>
-    {% csrf_token %}
-     <h3>Payment Done by :  {{expense.paid_to_names}}[0] </h3>
-    {% for expense in payments %}
-
-      <p>{{expense.paid_by_names}}  {{ expense.amount }}</p>
-      <!--<p>Split:</p>-->
-      <!--<input type="number" name="split_{{ expense.id }}" id="split_{{ expense.id }}" value="1" required>-->
-    {% endfor %}
-      <a href="{% url 'expenses:expense_list' id %}">Back To Expense List</a>
+  <h1>Expense Split</h1>
+  <h3>Paid by : {{ppp}}</h3>
+  <h3>Total amount : {{ Total }}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Owes</th>
+        <th>Owed To</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for expense in payments %}
+        <tr>
+          {% if expense.paid_by_names != ppp %}
+          <td>{{ expense.paid_by_names }}</td>
+          <td>{{ ppp }}</td>
+          <td>{{ expense.amount }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

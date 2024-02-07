@@ -17,7 +17,7 @@
     <header class="header">
       <nav class="nav">
         <img
-          src="{% static 'money.jpg'}"
+          src="{% static 'images/money.jpg' %}"
           alt="splitto4kiddo logo"
           class="nav__logo"
           id="logo"
@@ -43,7 +43,7 @@
           friends -no accounts or app installs required.
         </h4>
         <button class="btn--text btn--scroll-to">Learn more &DownArrow;</button>
-        <img src="./img/split.png" "{% static 'split.jpg'}" class="header__img" alt="hero1" />
+        <img src="{% static 'images/split.png'%}" class="header__img" alt="hero1" />
       </div>
     </header>
 
@@ -67,7 +67,7 @@
       </div>
     </section>
     <div class="myimg">
-      <img src="./img/icon.jpg" alt="our page"
+      <img src="{% static 'images/icon.jpg'%}" alt="our page"
       width="420px">
   </div>
     <section class="section section--sign-up">
@@ -92,7 +92,7 @@
           <a class="footer__link" href="blog.html">Blog</a>
         </li>
       </ul>
-      <img src="img/tabicon.png" alt="Logo" class="footer__logo" />
+      <img src="{% static 'images/tabicon.png'%}" alt="Logo" class="footer__logo" />
       <p class="footer__copyright">
         &copy; Made with ❤️ by
         <a

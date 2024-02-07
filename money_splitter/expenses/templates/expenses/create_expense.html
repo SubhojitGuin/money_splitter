@@ -10,6 +10,6 @@
 </form>
 <a href="{% url 'expenses:expense_list' id %}">Back to Expense List</a>
 {% if expense is not None %}
-<a href="{% url 'expenses:split_expense' expense_id=expense.id group_id=id %}">Split Expense</a>
+<a href="{% url 'expenses:split_expense' expense.id id %}">Split Expense</a>
 {% endif %}
 {% endblock %}

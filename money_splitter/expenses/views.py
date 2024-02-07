@@ -71,5 +71,6 @@ def split_exp(request, expense_id):
 
 def split_expense(request, expense_id, group_id):
     payments = Payment.objects.filter(expense_id=expense_id)
+    ppp = payments[0].paid_by_names
     return render(request, 'expenses/split_expense.html',
-                  {'payments': payments, 'id': group_id})
+                  {'payments': payments, 'id': group_id, 'ppp': ppp , 'Total': Expense.objects.get(id = expense_id).amount})
