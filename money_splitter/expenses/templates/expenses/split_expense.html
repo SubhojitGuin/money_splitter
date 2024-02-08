@@ -4,7 +4,8 @@
 {% block content %}
   <h1>Expense Split</h1>
   <h3>Paid by : {{ppp}}</h3>
-  <h3>Total amount : {{ Total }}</h3>
+  <h3>Total amount : {{ Total.amount }}</h3>
+ <h3>Payment made at : {{Total.created_at}}</h3>
   <table>
     <thead>
       <tr>

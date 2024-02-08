@@ -11,8 +11,53 @@ from django.contrib.auth import get_user_model
 def expense_list(request, pk):
     expenses = Expense.objects.filter(group=pk)
     group_name = Group.objects.get(id=pk).name
+
+    total = []
+    payment_to_names = []
+    group = Group.objects.get(id=pk)
+
+    # payment_to_id_list = Payment.objects.filter(
+    #     paidby_id=request.user.id, expense__group=group
+    # ).paidto_id
+
+    payment_to_id_list = Payment.objects.filter(
+        paidby_id=request.user.id, expense__group=group
+    ).values_list('paidto_id', flat=True).distinct()
+
+    # payment_to_id_list = Payment.objects.filter(
+    #     paidby_id=request.user.id, expense__group=group
+    # ).paid_to_name
+
+    for payment_to_id in payment_to_id_list:
+        if request.user.id == payment_to_id:
+            continue
+        total_due = calculate_total_due(request, request.user.id, payment_to_id, pk)
+        total.append(total_due)
+        payment_to_names.append(get_user_model().objects.get(id=payment_to_id).username)
+
+    l = list(zip(payment_to_names, total))
     return render(request, 'expenses/expense_list.html',
-                  {'expenses': expenses, 'id': pk , 'group_name': group_name})
+                  {'expenses': expenses, 'id': pk, 'group_name': group_name,
+                   'l': total})
+
+
+def calculate_total_due(request, paid_by_id, paid_to_id, group_id):
+    # paid_by = CustomUser.objects.get(id=paid_by_id)
+    # paid_to = CustomUser.objects.get(id=paid_to_id)
+    group = Group.objects.get(id=group_id)
+
+    payments_from_paid_by_to_paid_to = Payment.objects.filter(
+        paidby_id=paid_by_id, paidto_id=paid_to_id, expense__group=group
+    )
+    payments_from_paid_to_to_paid_by = Payment.objects.filter(
+        paidby_id=paid_to_id, paidto_id=paid_by_id, expense__group=group
+    )
+
+    total_due = sum(
+        [payment.amount for payment in payments_from_paid_by_to_paid_to]) - sum(
+        [payment.amount for payment in payments_from_paid_to_to_paid_by])
+
+    return total_due
 
 
 @login_required
@@ -67,6 +112,8 @@ def split_exp(request, expense_id):
         # payment.paid_by = expense.creator
         payment.paid_by_names = member.username
         payment.paid_to_names = expense.creator.username
+        payment.paidby_id = member.id
+        payment.paidto_id = expense.creator.id
 
         payment.save()
 
@@ -75,4 +122,5 @@ def split_expense(request, expense_id, group_id):
     payments = Payment.objects.filter(expense_id=expense_id)
     ppp = payments[0].paid_by_names
     return render(request, 'expenses/split_expense.html',
-                  {'payments': payments, 'id': group_id, 'ppp': ppp , 'Total': Expense.objects.get(id = expense_id).amount})
+                  {'payments': payments, 'id': group_id, 'ppp': ppp,
+                   'Total': Expense.objects.get(id=expense_id)})

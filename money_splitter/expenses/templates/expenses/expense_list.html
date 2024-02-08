@@ -4,6 +4,11 @@
   <h1>{{group_name}}: Expenses</h1>
   <h4> Group ID: {{ id }}</h4>
   <ul>
+    {% for x  in l %}
+    <li>{{x}}</li>
+    {% endfor %}
+  </ul>
+  <ul>
     {% for expense in expenses %}
     <li><a href="{% url 'expenses:split_expense' expense_id=expense.id group_id=id%}">{{ expense.name }}</a> - {{ expense.amount }}</li>
     {% endfor %}
