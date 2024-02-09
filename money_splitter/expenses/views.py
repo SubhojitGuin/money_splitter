@@ -4,6 +4,7 @@ from .models import Expense
 from payments.models import Payment
 from .forms import ExpenseForm
 from groups.models import Group
+from users.models import CustomUser
 from django.contrib.auth import get_user_model
 
 
@@ -12,52 +13,93 @@ def expense_list(request, pk):
     expenses = Expense.objects.filter(group=pk)
     group_name = Group.objects.get(id=pk).name
 
-    total = []
-    payment_to_names = []
-    group = Group.objects.get(id=pk)
-
-    # payment_to_id_list = Payment.objects.filter(
-    #     paidby_id=request.user.id, expense__group=group
-    # ).paidto_id
-
-    payment_to_id_list = Payment.objects.filter(
-        paidby_id=request.user.id, expense__group=group
-    ).values_list('paidto_id', flat=True).distinct()
-
-    # payment_to_id_list = Payment.objects.filter(
-    #     paidby_id=request.user.id, expense__group=group
-    # ).paid_to_name
-
-    for payment_to_id in payment_to_id_list:
-        if request.user.id == payment_to_id:
-            continue
-        total_due = calculate_total_due(request, request.user.id, payment_to_id, pk)
-        total.append(total_due)
-        payment_to_names.append(get_user_model().objects.get(id=payment_to_id).username)
-
-    l = list(zip(payment_to_names, total))
     return render(request, 'expenses/expense_list.html',
-                  {'expenses': expenses, 'id': pk, 'group_name': group_name,
-                   'l': total})
+                  {'expenses': expenses, 'id': pk, 'group_name': group_name})
+
+    # total = []
+    # payment_to_names = []
+    # group = Group.objects.get(id=pk)
+    #
+    # # payment_to_id_list = Payment.objects.filter(
+    # #     paidby_id=request.user.id, expense__group=group
+    # # ).paidto_id
+    #
+    # payment_to_id_list = Payment.objects.filter(
+    #     paidby_id=request.user.id, expense__group=group
+    # ).values_list('paidto_id', flat=True).distinct()
+    #
+    # # payment_to_id_list = Payment.objects.filter(
+    # #     paidby_id=request.user.id, expense__group=group
+    # # ).paid_to_name
+    #
+    # for payment_to_id in payment_to_id_list:
+    #     if request.user.id == payment_to_id:
+    #         continue
+    #     total_due = calculate_total_due(request, request.user.id, payment_to_id, pk)
+    #     total.append(total_due)
+    #     payment_to_names.append(get_user_model().objects.get(id=payment_to_id).username)
+    #
+    # l = list(zip(payment_to_names, total))
+    # return render(request, 'expenses/expense_list.html',
+    #               {'expenses': expenses, 'id': pk, 'group_name': group_name,
+    # 'l': total})
 
 
-def calculate_total_due(request, paid_by_id, paid_to_id, group_id):
-    # paid_by = CustomUser.objects.get(id=paid_by_id)
-    # paid_to = CustomUser.objects.get(id=paid_to_id)
+# def calculate_total_due(request, paid_by_id, paid_to_id, group_id):
+#     # paid_by = CustomUser.objects.get(id=paid_by_id)
+#     # paid_to = CustomUser.objects.get(id=paid_to_id)
+#     group = Group.objects.get(id=group_id)
+#
+#     payments_from_paid_by_to_paid_to = Payment.objects.filter(
+#         paidby_id=paid_by_id, paidto_id=paid_to_id, expense__group=group
+#     )
+#     payments_from_paid_to_to_paid_by = Payment.objects.filter(
+#         paidby_id=paid_to_id, paidto_id=paid_by_id, expense__group=group
+#     )
+#
+#     total_due = sum(
+#         [payment.amount for payment in payments_from_paid_by_to_paid_to]) - sum(
+#         [payment.amount for payment in payments_from_paid_to_to_paid_by])
+#
+#     return total_due
+
+
+
+
+@login_required
+def net_amount_owed(request, group_id):
+    # user = CustomUser.objects.get(id=user_id)
+    user = request.user.id
+    # group = user.member_groups.first()
     group = Group.objects.get(id=group_id)
+    # members = group.members.exclude(id=user.id)
+    payments = Payment.objects.filter(paidto_id=user, expense__group=group)
+    # total_paid = sum([p.amount for p in payments])
+    # net_owed = total_paid - sum([p.paid_to.amount_owed for p in payments])
 
-    payments_from_paid_by_to_paid_to = Payment.objects.filter(
-        paidby_id=paid_by_id, paidto_id=paid_to_id, expense__group=group
-    )
-    payments_from_paid_to_to_paid_by = Payment.objects.filter(
-        paidby_id=paid_to_id, paidto_id=paid_by_id, expense__group=group
-    )
+    net_owed = {}
+    names = {}
+    for p in payments:
+        if p.paidby_id not in net_owed:
+            net_owed[p.paidby_id] = -p.amount
+            names[p.paidby_id] = p.paid_by_names
 
-    total_due = sum(
-        [payment.amount for payment in payments_from_paid_by_to_paid_to]) - sum(
-        [payment.amount for payment in payments_from_paid_to_to_paid_by])
 
-    return total_due
+        else:
+            net_owed[p.paidby_id] -= p.amount
+
+    payments = Payment.objects.filter(paidby_id=user, expense__group=group)
+    for p in payments:
+        if p.paidto_id not in net_owed:
+            net_owed[p.paidto_id] = p.amount
+            names[p.paidto_id] = p.paid_to_names
+
+
+        else:
+            net_owed[p.paidto_id] += p.amount
+
+    return render(request, 'expenses/net_amount_owed.html',
+                  {'user': user, 'net_owed': net_owed, 'names': names})
 
 
 @login_required

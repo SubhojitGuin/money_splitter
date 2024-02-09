@@ -1,0 +1,10 @@
+{% extends 'expenses/base_generic.html' %}
+
+{% block content %}
+<ul>
+    {% for id, amount_owed in net_owed.items %}
+        <li>{{names.id}} {{amount_owed}}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
