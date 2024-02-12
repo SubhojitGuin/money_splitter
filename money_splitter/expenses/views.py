@@ -64,8 +64,6 @@ def expense_list(request, pk):
 #     return total_due
 
 
-
-
 @login_required
 def net_amount_owed(request, group_id):
     # user = CustomUser.objects.get(id=user_id)
@@ -79,11 +77,12 @@ def net_amount_owed(request, group_id):
 
     net_owed = {}
     names = {}
+
+    amount_name_list = []
     for p in payments:
         if p.paidby_id not in net_owed:
             net_owed[p.paidby_id] = -p.amount
             names[p.paidby_id] = p.paid_by_names
-
 
         else:
             net_owed[p.paidby_id] -= p.amount
@@ -94,12 +93,16 @@ def net_amount_owed(request, group_id):
             net_owed[p.paidto_id] = p.amount
             names[p.paidto_id] = p.paid_to_names
 
-
         else:
             net_owed[p.paidto_id] += p.amount
 
+    for (key1, value1), (key2, value2) in zip(net_owed.items(), names.items()):
+        if value1 != 0:
+            amount_name_list.append({'amt': value1, 'name': value2})
+
     return render(request, 'expenses/net_amount_owed.html',
-                  {'user': user, 'net_owed': net_owed, 'names': names})
+                  {'user': user, 'group': group,
+                   'amount_name_list': amount_name_list})
 
 
 @login_required

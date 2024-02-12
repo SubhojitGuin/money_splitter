@@ -2,8 +2,8 @@
 
 {% block content %}
 <ul>
-    {% for id, amount_owed in net_owed.items %}
-        <li>{{names.id}} {{amount_owed}}</li>
+    {% for i in amount_name_list %}
+        <li>{{i.name}} {{i.amt}}</li>
     {% endfor %}
 </ul>
 
